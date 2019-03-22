@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+<head></head>
+<body>
+  <button onclick="kirim()">Send</button>                       
+  <script>
+    function kirim(){
+      var valRand = Math.floor(Math.random() * 11);
+      ws.send(JSON.stringify({                                  //you can change this json value
+        "to":"jiiotclient",
+        "value":valRand
+      }));
+    }
+    var ws = new WebSocket('ws://ws.achex.ca:4010');            //achex server
+    var login = {setID: "youruser", passwd: "yourpassword"};    //login json
+    ws.onopen = function(e) {
+      ws.send(JSON.stringify(login));                           //send login parameter
+      console.log(e);
+      console.log(JSON.stringify(login));
+    }
+    ws.onmessage = function(evt) { 
+      var received_msg = evt.data;
+      console.log(received_msg);
+    }
+    ws.onclose = function(evt) { 
+      console.log(evt); 
+    }
+    ws.onerror = function(evt) { 
+      console.log(evt); 
+    }
+  </script>
+</body>
+</html>
